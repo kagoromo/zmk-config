@@ -93,7 +93,7 @@
 		num {
 			bindings = <
 &kp ESC         &none           &none           &none           &none           &none                                   &none           &tog NUM        &none           &none           &none          &none
-&none           &none           &none           &mkp LCLK       &mkp RCLK       &none                                   &kp LBKT        &kp N7          &kp N8          &kp N9          &kp RBKT       &none
+&none           &none           &mkp MCLK       &mkp LCLK       &mkp RCLK       &none                                   &kp LBKT        &kp N7          &kp N8          &kp N9          &kp RBKT       &none
 &none           &kp LGUI        &kp LALT        &kp LCTRL       &kp LSHFT       &none                                   &kp EQUAL       &kp N4          &kp N5          &kp N6          &kp SEMI       &none
 &none           &none           &none           &none           &none           &none           &kp LBKT    &kp RBKT    &kp BSLH        &kp N1          &kp N2          &kp N3          &kp GRAVE      &none
                                 &trans          &trans          &trans          &trans                                  &kp MINUS       &kp N0          &kp DOT         &none
