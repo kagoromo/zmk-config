@@ -14,4 +14,8 @@
 ---
 include:
   - board: nice_nano_v2
+    shield: lily58_left
+  - board: nice_nano_v2
+    shield: lily58_right
+  - board: nice_nano_v2
     shield: chocv
