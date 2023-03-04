@@ -107,7 +107,7 @@ ZMK_BEHAVIOR(hmr, hold_tap,  // right-hand HRMs
 
 
 /* Macros */
-{
+/{
   // combo_numlock and htnl are mostly for drag-scrolling with a trackball
   combos {
       compatible = "zmk,combos";
@@ -130,7 +130,7 @@ ZMK_BEHAVIOR(hmr, hold_tap,  // right-hand HRMs
               ;
       };
   };
-}
+};
 
 
 /* Keymap */
@@ -254,4 +254,3 @@ ZMK_LAYER(adjust,
                                 ___           ___           ___             ___           ___           ___                                      
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
-};
