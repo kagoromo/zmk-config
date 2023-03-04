@@ -6,10 +6,12 @@ manifest:
       url-base: https://github.com/krikun98
     - name: ftc
       url-base: https://github.com/ftc
+    - name: urob
+      url-base: https://github.com/urob
   projects:
     - name: zmk
-      remote: ftc
-      revision: mouse-ftc
+      remote: urob
+      revision: main
       import: app/west.yml
   self:
     path: config
