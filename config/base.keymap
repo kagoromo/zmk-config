@@ -11,18 +11,18 @@
 
 #include "../zmk-nodefree-config/helper.h"
 
-#define BASE    0
+#define DEF     0
 #define CMAK    1
 #define NAV     2
 #define MOUSE   3
 #define MEDIA   4
 #define NUM     5
 #define SYM     6
-#define FUN     7
+#define FN      7
 #define VANILLA 8
-#define ADJUST  9
+#define SYS     9
 
-// #include "combos.dtsi"  // must be sourced after layer-shortcuts
+#include "combos.dtsi"  // must be sourced after layer-shortcuts
 #include "mouse.dtsi"
 
 
@@ -106,7 +106,130 @@ ZMK_BEHAVIOR(hmr, hold_tap,  // right-hand HRMs
 )
 
 
-/* Macros */
+/* Custom behaviors */
+
+// tap: num-word | double-tap: sticky fun-layer | hold: num-layer
+ZMK_BEHAVIOR(num_fun_dance, tap_dance,
+    tapping-term-ms = <200>;
+    bindings = <&num_word>, <&sl FN>;
+)
+ZMK_BEHAVIOR(num_layer_word, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <QUICK_TAP_MS>;
+    bindings = <&mo>, <&num_fun_dance>;
+)
+#define NUM_WORD &num_layer_word NAV 0
+
+// mouse layer that deactivates automatically on all other keys, requires PR #1366
+ZMK_BEHAVIOR(smart_mouse, tri_state,
+    bindings = <&tog MOUSE>, <&none>, <&tog MOUSE>;
+    ignored-key-positions = <RT1 RT2 RT3 RM1 RM2 RM3 RH0 RH1>;  // mouse keys
+    ignored-layers = <MOUSE>;
+)
+
+// tap: sticky shift | double tap: capsword | triple tap: cancel capsword
+// ZMK_BEHAVIOR(ss_cw, tap_dance,
+//     tapping-term-ms = <200>;
+//     bindings = <&sk LSHFT>, <&caps_word>, <CANCEL>;
+// )
+// tap: sticky-shift | lshft + tap: caps-word | hold: shift
+ZMK_BEHAVIOR(ss_cw, mod_morph,
+    bindings = <&sk LSHFT>, <&caps_word>;
+    mods = <(MOD_LSFT)>;
+)
+
+// tap: backspace | lshft + tap: delete | rshft + tap: shift-delete | hold: fn layer
+ZMK_BEHAVIOR(bs_del, mod_morph,
+    bindings = <&kp BSPC>, <&kp DEL>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+    keep-mods = <MOD_LSFT>;
+)
+ZMK_BEHAVIOR(lt_bspc, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <QUICK_TAP_MS>;
+    bindings = <&mo>, <&bs_del>;
+)
+
+// tap: space | space + tap: dot -> space -> sticky shift | hold: activate layer
+ZMK_BEHAVIOR(dot_spc, macro,
+    wait-ms = <0>;
+    tap-ms = <5>;
+    bindings = <&kp DOT &kp SPACE &sk LSHFT>;
+)
+ZMK_BEHAVIOR(spc_morph, mod_morph,
+    bindings = <&kp SPACE>, <&dot_spc>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+)
+ZMK_BEHAVIOR(lt_spc, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <QUICK_TAP_MS>;
+    bindings = <&mo>, <&spc_morph>;
+)
+
+// tap: copy | double-tap: cut
+ZMK_BEHAVIOR(copy_cut, tap_dance,
+    tapping-term-ms = <200>;
+    bindings = <&kp LC(INS)>, <&kp LC(X)>;
+)
+
+// Windows sleep key
+ZMK_BEHAVIOR(win_sleep, macro,
+    wait-ms = <100>;
+    tap-ms = <5>;
+    bindings = <&kp LG(X) &kp U &kp S>;
+)
+
+/*
+// Sticky layer + sticky shift (workaround for issue #1421)
+ZMK_BEHAVIOR(uc_shift, macro,
+    wait-ms = <0>;
+    tap-ms = <1>;
+    bindings = <&macro_press &mo UC &kp LSHFT>
+             , <&macro_pause_for_release>
+             , <&macro_release &mo UC &kp LSHFT>;
+)
+ZMK_BEHAVIOR(sls, sticky_key,
+    release-after-ms = <1000>;
+    bindings = <&uc_shift>;
+    ignore-modifiers;
+)
+*/
+
+// tap: comma | shift + tap: semicolon | ctrl + shift + tap: <
+ZMK_BEHAVIOR(comma_inner_morph, mod_morph,
+    bindings = <&kp SEMICOLON>, <&kp LESS_THAN>;
+    mods = <(MOD_LCTL|MOD_RCTL)>;
+)
+ZMK_BEHAVIOR(comma_morph, mod_morph,
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+    bindings = <&kp COMMA>, <&comma_inner_morph>;
+)
+
+// tap: dot | shift + tap: colon | ctrl + shift + tap: >
+ZMK_BEHAVIOR(dot_inner_morph, mod_morph,
+    bindings = <&kp COLON>, <&kp GREATER_THAN>;
+    mods = <(MOD_LCTL|MOD_RCTL)>;
+)
+ZMK_BEHAVIOR(dot_morph, mod_morph,
+    bindings = <&kp DOT>, <&dot_inner_morph>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+)
+
+// tap: qmark | shift + tap: excl
+ZMK_BEHAVIOR(qexcl, mod_morph,
+    bindings = <&kp QMARK>, <&kp EXCL>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+)
+
+// Swapper, requires PR #1366
+ZMK_BEHAVIOR(swap, tri_state,
+    bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
+    ignored-key-positions = <LT2>;
+)
+
 /{
   // combo_numlock and htnl are mostly for drag-scrolling with a trackball
   combos {
@@ -143,7 +266,7 @@ ZMK_LAYER(base,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &kp Z         &kp X         &kp C         &kp V         &kp B           &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH     
 //╰─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼───────────────────────────╯
-                                &lt FUN ESC   &lt NUM SPACE &lt SYM TAB     &lt MOUSE RET &lt NAV BSPC  &lt MEDIA DEL                            
+                                &lt_bspc FN 0 &lt_spc NUM 0 &lt SYM TAB     &lt MEDIA RET NUM_WORD      &ss_cw                                   
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
@@ -155,7 +278,7 @@ ZMK_LAYER(cmak,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &kp Z         &kp X         &kp C         &kp D         &kp V           &kp K         &kp H         &kp COMMA     &kp DOT       &kp FSLH     
 //╰─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼───────────────────────────╯
-                                &lt FUN ESC   &lt NUM SPACE &lt SYM TAB     &lt MOUSE RET &lt NAV BSPC  &lt MEDIA DEL                            
+                                &lt FN ESC    &lt NUM SPACE &lt SYM TAB     &lt MEDIA RET &lt NAV BSPC  &lt MEDIA DEL                            
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
@@ -219,7 +342,7 @@ ZMK_LAYER(sym,
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
-ZMK_LAYER(fun,
+ZMK_LAYER(fn,
 //╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
     ___           ___           ___           ___           &reset          &kp PSCRN     &kp F7        &kp F8        &kp F9        &kp F12      
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
@@ -227,7 +350,7 @@ ZMK_LAYER(fun,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     ___           ___           ___           ___           ___           &kp PAUSE_BREAK &kp F1        &kp F2        &kp F3        &kp F10      
 //╰─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼───────────────────────────╯
-                                XXX           XXX           XXX             &kp TAB       &kp SPACE     &lt ADJUST K_APP                         
+                                XXX           XXX           XXX             &kp TAB       &kp SPACE     &lt SYS K_APP                         
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
@@ -239,11 +362,11 @@ ZMK_LAYER(vanilla,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &kp Z         &kp X         &kp C         &kp V         &kp B           &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH     
 //╰─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼───────────────────────────╯
-                                &lt FUN ESC   &kp SPACE     &kp TAB         &kp RET       &kp BSPC      &lt ADJUST DEL                           
+                                &lt FN ESC    &kp SPACE     &kp TAB         &kp RET       &kp BSPC      &lt SYS DEL                           
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
-ZMK_LAYER(adjust,
+ZMK_LAYER(sys,
 //╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &to 0         &to 1         &to 8         &none         &none        
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
