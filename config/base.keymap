@@ -22,7 +22,7 @@
 #define VANILLA 8
 #define SYS     9
 
-#include "combos.dtsi"  // must be sourced after layer-shortcuts
+// #include "combos.dtsi"  // must be sourced after layer-shortcuts
 #include "mouse.dtsi"
 
 
@@ -266,7 +266,7 @@ ZMK_LAYER(base,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &kp Z         &kp X         &kp C         &kp V         &kp B           &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH     
 //╰─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼───────────────────────────╯
-                                &lt_bspc FN 0 &lt_spc NUM 0 &lt SYM TAB     &lt MEDIA RET NUM_WORD      &ss_cw                                   
+                                &lt FN ESC    &lt_spc NUM 0 &lt SYM TAB     &lt MEDIA RET &lt_bspc NAV 0 &ss_cw                                   
 //                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯                            
 )
 
