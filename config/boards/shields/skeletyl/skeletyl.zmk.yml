@@ -4,7 +4,6 @@ name: Skeletyl
 type: shield
 url: https://github.com/Bastardkb/Skeletyl
 requires: [pro_micro]
-exposes: [i2c_oled]
 features:
   - keys
 siblings:

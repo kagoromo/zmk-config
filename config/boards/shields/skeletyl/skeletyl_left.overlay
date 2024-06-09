@@ -1,19 +1,23 @@
-// skeletyl_left.overlay
- 
+/*
+ * Copyright (c) 2020 ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 #include "skeletyl.dtsi"
- 
+
 &kscan0 {
+	col-gpios
+		= <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&pro_micro 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&pro_micro  6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&pro_micro  7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&pro_micro  8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		;
     row-gpios
-        = <&pro_micro 10 (GPIO_ACTIVE_HIGH)> // row0 C3 009 D10
-        , <&pro_micro 21 (GPIO_ACTIVE_HIGH)> // row1 R1 031 D21
-        , <&pro_micro 20 (GPIO_ACTIVE_HIGH)> // row2 C2 029 D20
-        , <&pro_micro 19 (GPIO_ACTIVE_HIGH)> // row3 C1 002 D19
-        ; 
-    col-gpios
-        = <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // col0 C6 104 D8
-        , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // col1 C5 011 D7
-        , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // col2 C4 100 D6
-        , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // col3 R3 024 D5
-        , <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // col4 R4 022 D4
-        ;
+        = <&pro_micro 18   GPIO_ACTIVE_HIGH>
+        , <&pro_micro 5   GPIO_ACTIVE_HIGH>
+        , <&pro_micro 4   GPIO_ACTIVE_HIGH>
+        , <&pro_micro 9  GPIO_ACTIVE_HIGH>
+    ;
 };
