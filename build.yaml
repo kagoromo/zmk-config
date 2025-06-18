@@ -19,7 +19,15 @@
 #
 ---
 include:
-  - board: nrf52840dk_nrf52840
-    shield: corne_left
-  - board: nrf52840dk_nrf52840
-    shield: corne_right
+  - board: nice_nano_v2
+    shield: settings_reset
+  - board: nice_nano_v2
+    shield: chocofi_left
+  - board: nice_nano_v2
+    shield: chocofi_right
+  - board: nice_nano_v2
+    shield: chocv
+  - board: nice_nano_v2
+    shield: skeletyl_left
+  - board: nice_nano_v2
+    shield: skeletyl_right
